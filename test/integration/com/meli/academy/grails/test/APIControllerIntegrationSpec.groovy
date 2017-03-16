@@ -53,11 +53,6 @@ class APIControllerIntegrationSpec extends GroovyTestCase {
 		controller.jsonProducto()
 		assertEquals(jsonProd.toString(), controller.response.contentAsString)
 		
-		println "JSON PRODUCTO:"
-		println jsonProd.toString()
-		println "JSON PRODUCTO RESPONSE:"
-		println controller.response.contentAsString
-		
 		controller.response.reset()
 		
 		controller.jsonCategoria()
