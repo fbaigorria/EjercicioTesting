@@ -1,9 +1,7 @@
 package com.meli.academy.grails.test
 import grails.converters.JSON
 
-import grails.test.spock.IntegrationSpec
-
-class APIControllerIntegrationSpec extends IntegrationSpec {
+class APIControllerIntegrationSpec extends GroovyTestCase {
 
 	def cat
 	def prod
@@ -21,8 +19,15 @@ class APIControllerIntegrationSpec extends IntegrationSpec {
 		cat.delete()
 	}
 
-	void "Test Json Categoria"() {
-		when: 'Obtenemos Json'
+	void "test Json Categoria"() {
+		//Creamos categoria y Producto
+		cat = new Categoria(nombre: 'Liquido', id: 1)
+		prod = new Producto(nombre: "Bebidas", codigo: 'ret45', imageName: 'fichero09.png', disponible: true, categoria: cat)
+		cat.addToProductos(prod)
+		cat.save()
+		prod.save()
+		
+		
 		//Creamos un objeto Json
 		JSON.registerObjectMarshaller(Producto) {
 			def returnArray = [:]
@@ -46,6 +51,9 @@ class APIControllerIntegrationSpec extends IntegrationSpec {
 		//Llamamos al controller para que nos devuelva metodos de controller
 		APIController controller = new APIController()
 		controller.jsonCategoria()
+		System.out.println("----RESPONSE: " + controller.response.contentAsString)
+		System.out.println("----TEST: " + json.toString())
+		
 		assertEquals(json.toString(), controller.response.contentAsString)
 	}
 }

@@ -1,6 +1,7 @@
 package com.meli.academy.grails.test
 
 import grails.converters.JSON
+import grails.converters.XML
 import groovy.json.*
 
 class APIController {
