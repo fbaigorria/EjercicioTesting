@@ -16,7 +16,7 @@ class APIController {
 			def returnArray = [:]
 			returnArray['nombre'] = it.nombre
 			returnArray['codigo'] = it.codigo
-			returnArray['imagen'] = it.imageName
+			returnArray['imagenPath'] = it.imageName
 			returnArray['disponible'] = it.disponible
 			return returnArray
 		}
@@ -38,7 +38,7 @@ class APIController {
 			def returnArray = [:]
 			returnArray['nombre'] = it.nombre
 			returnArray['codigo'] = it.codigo
-			returnArray['imagen'] = it.imageName
+			returnArray['imagenPat'] = it.imageName
 			returnArray['disponible'] = it.disponible
 			return returnArray
 		}

@@ -1,6 +1,6 @@
 package com.meli.academy.grails.test
-import grails.converters.JSON
 
+import grails.converters.JSON
 class APIControllerIntegrationSpec extends GroovyTestCase {
 
 	def cat
@@ -8,8 +8,9 @@ class APIControllerIntegrationSpec extends GroovyTestCase {
 
 	def setup() {
 		//Creamos categoria y Producto
-		cat = new Categoria(nombre: 'Liquido', id: 1)
-		prod = new Producto(nombre: "Bebidas", codigo: 'ret45', imageName: 'fichero09.png', disponible: true, categoria: cat)
+		cat = new Categoria(nombre: 'Bebidas')
+		prod = new Producto(nombre: "Fanta", codigo: 'ret45', imageName: 'fichero09.png', disponible: true, categoria: cat)
+		cat.addToProductos(prod)
 		cat.save()
 		prod.save()
 	}
@@ -19,14 +20,9 @@ class APIControllerIntegrationSpec extends GroovyTestCase {
 		cat.delete()
 	}
 
-	void "test Json Categoria"() {
-		//Creamos categoria y Producto
-		cat = new Categoria(nombre: 'Liquido', id: 1)
-		prod = new Producto(nombre: "Bebidas", codigo: 'ret45', imageName: 'fichero09.png', disponible: true, categoria: cat)
-		cat.addToProductos(prod)
-		cat.save()
-		prod.save()
-		
+	void "testJsonCategoriaAndProducto"() {
+		//Inicializamos todo lo necesario
+		setup()
 		
 		//Creamos un objeto Json
 		JSON.registerObjectMarshaller(Producto) {
@@ -46,14 +42,34 @@ class APIControllerIntegrationSpec extends GroovyTestCase {
 		}
 
 		def listaCategorias = [categoriasInstanceList:[Categoria.list().sort {it.id}]]
-		def json = listaCategorias as JSON
+		def jsonCat = listaCategorias as JSON
+		
+		def listaProductos = [productosInstanceList:[Producto.list().sort {it.id}]]
+		def jsonProd = listaProductos as JSON
 
 		//Llamamos al controller para que nos devuelva metodos de controller
 		APIController controller = new APIController()
-		controller.jsonCategoria()
-		System.out.println("----RESPONSE: " + controller.response.contentAsString)
-		System.out.println("----TEST: " + json.toString())
 		
-		assertEquals(json.toString(), controller.response.contentAsString)
+		controller.jsonProducto()
+		assertEquals(jsonProd.toString(), controller.response.contentAsString)
+		
+		println "JSON PRODUCTO:"
+		println jsonProd.toString()
+		println "JSON PRODUCTO RESPONSE:"
+		println controller.response.contentAsString
+		
+		controller.response.reset()
+		
+		controller.jsonCategoria()
+
+		assertEquals(jsonCat.toString(), controller.response.contentAsString)
+		
+		println "JSON CATEGORIA:"
+		println jsonCat.toString()
+		println "JSON CATEGORIA RESPONSE:"
+		println controller.response.contentAsString
+		
+		//Limpiamos
+		cleanup()
 	}
 }
