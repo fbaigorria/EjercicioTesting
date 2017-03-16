@@ -1,4 +1,4 @@
-# .gitignore for Grails 1.2 and 1.3
+#.gitignore for Grails 1.2 and 1.3
 # Although this should work for most versions of grails, it is
 # suggested that you use the "grails integrate-with --git" command
 # to generate your .gitignore file.
@@ -33,3 +33,6 @@
 /target/
 /target-eclipse/
 /target-eclipse/classes/
+.classpath
+.project
+.settings
